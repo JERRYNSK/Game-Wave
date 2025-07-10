@@ -49,9 +49,10 @@ class Player(pygame.sprite.Sprite):
             self.y_position += self.normalized_move.y * self.speed * dt
 
         self.rect.center = (self.x_position, self.y_position)#actualize the position
-    def update_game(self, screen,enemy, dt):
+    def update_game(self, screen,enemy, canshoot, dt):
         self.move(dt)
-        self.fire(enemy, dt)
+        if canshoot:
+            self.fire(enemy, dt)
         self.bullet_group.draw(screen)
     def get_pos(self):
         return self.x_position, self.y_position
@@ -67,6 +68,11 @@ class Player(pygame.sprite.Sprite):
         if self.bullets_list:
             for i in self.bullets_list:
                 i.move(self, dt)
+
+
+
+    def get_bullets_sprite_group(self):
+        return self.bullet_group
 
 
 

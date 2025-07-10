@@ -13,6 +13,9 @@ class Wave():
     
 
     def __init__(self):
+        self.spawn_enemies()
+           
+    def spawn_enemies(self):
         offset = 0
         for i in range(self.max_enemies):
             self.enemies_list.append(Enemy(300, offset))
@@ -20,8 +23,6 @@ class Wave():
             offset += 150
         for i in self.enemies_list:
             self.enemy_group.add(i)
-           
-
        
 
     def update(self, screen, player, dt):
@@ -29,9 +30,20 @@ class Wave():
         self.enemy_group.draw(screen)
         for i in self.enemies_list:
             i.update_game(player, dt)
-        #colisoes entre inimigos
+        self.when_sprite_dead()
+        #SE NAO HOUVER INIMIGOS, ELE DÁ SPANW, CUIDADO POHA
+        if not self.there_enemy():
+            self.spawn_enemies()
+
         
         
+    def when_sprite_dead(self):
+        for i in self.enemies_list:
+            if not i.alive():
+                self.enemies_list.remove(i)
+                del self.distance_list[len(self.distance_list) - 1]
+
+
 
     def update_time(self):
         pass
@@ -39,15 +51,17 @@ class Wave():
 
 
     def nearest_enemy(self, player):
-
-        self.minor = min(self.distance_list)
         for i in range(len(self.enemies_list)):
             self.distance_list[i] = self.enemies_list[i].distance
-        for i in range(len(self.enemies_list)):
-            if abs(self.minor - self.enemies_list[i].distance) < 1:
-                return self.enemies_list[i]
+        for i in self.enemies_list:
+            self.minor = min(self.distance_list)
+            if math.isclose(self.minor, i.distance):
+                print(i.distance)
+                return i
+                
 
-        return self.enemies_list[0]
-
+        return None
+    def there_enemy(self):
+        return len(self.enemies_list) != 0
     def get_group(self):
         return self.enemy_group

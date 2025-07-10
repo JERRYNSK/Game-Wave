@@ -19,28 +19,35 @@ enemy_group_sprite = pygame.sprite.Group()
 bullet_group_sprite = pygame.sprite.Group()
 
 player_group_sprite.add(player)
-#usaremos mais tarde quando quiusermos colidir player e inimigp(xp) e balas tmb
-enemy_group_sprite = wave_config.get_group()
+
 
 #functions of game to paiagame 
 def update_game():
     global delta_time
-    #actualize deltatime
-    delta_time = clock_obj.tick(60) / 1000
     #wave config
-    player.update_game(screen, wave_config.nearest_enemy(player), delta_time)
+    player.update_game(screen, wave_config.nearest_enemy(player), wave_config.there_enemy(), delta_time)
     wave_config.update(screen, player, delta_time)
     #updating group
     player_group_sprite.update(screen)
+    actualize_groups_sprites()
     #handle inputs
     for event in pygame.event.get():
          if event.type == pygame.QUIT:
             pygame.quit()
+    delta_time = clock_obj.tick(60) / 1000
+    #print(delta_time)
 
 def draw_game():
     screen.fill((0, 0, 0))
     #drawing group
     player_group_sprite.draw(screen)
+
+def actualize_groups_sprites():
+    #usaremos mais tarde quando quiusermos colidir player e inimigp(xp) e balas tmb
+    enemy_group_sprite = wave_config.get_group()
+    bullet_group_sprite = player.get_bullets_sprite_group()
+    #collisions handle
+    colisions = pygame.sprite.groupcollide(enemy_group_sprite, bullet_group_sprite, True, True)
 
 
 #loop of the paiagame
@@ -48,5 +55,7 @@ while(True):
     draw_game()
     update_game()
     #final
-    pygame.display.update()
     clock_obj.tick(60)
+    pygame.display.update()
+
+    

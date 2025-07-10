@@ -16,14 +16,16 @@ class Bullet(pygame.sprite.Sprite):
         self.x = player.get_pos()[0]
         self.y = player.get_pos()[1] 
         self.rect.center = (self.x, self.y)
-        self.xdir = enemy.get_pos()[0]
-        self.ydir = enemy.get_pos()[1]
+        if enemy != None:
+            self.xdir = enemy.get_pos()[0]
+            self.ydir = enemy.get_pos()[1]
         self.direction = pygame.Vector2(self.xdir - self.x, self.ydir - self.y).normalize()
 
     def update_game(self, player, enemy, dt):
         self.move(player, dt)
         
     def move(self, player, dt):
+
         self.x += self.direction.x * self.speed * dt
         self.y += self.direction.y * self.speed * dt
         self.rect.center = (self.x, self.y)
