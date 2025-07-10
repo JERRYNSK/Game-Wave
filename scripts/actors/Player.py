@@ -3,12 +3,15 @@ from actors.Bullet import Bullet
 
 class Player(pygame.sprite.Sprite):
     #variables
+    range_fire = 200
+    damage_fire = 50
     x_position = 400
     y_position = 300
     velocity_x = 0
     velocity_y = 0
     speed = 500
     cooldown_fire_timer = 0
+    timer_to_fire = 0.1
     bullets_list = []
     bullet_group = pygame.sprite.Group()
 
@@ -58,7 +61,7 @@ class Player(pygame.sprite.Sprite):
         return self.x_position, self.y_position
 
     def fire(self, enemy, dt):
-        if self.cooldown_fire_timer > 0.5:
+        if enemy.distance < range_fire and self.cooldown_fire_timer > self.timer_to_fire:
             self.bullet = Bullet(self, enemy)
             self.bullets_list.append(self.bullet)
             self.bullet_group.add(self.bullet)

@@ -9,14 +9,15 @@ class Enemy(pygame.sprite.Sprite):
     velocity_y = 0
     distance = 0
     speed = 250
-    def __init__(self, x, y):
+    damage = 10
+    def __init__(self, pos):
         pygame.sprite.Sprite.__init__(self)
         self.img = pygame.image.load('assets/enemy.png').convert_alpha()
         self.image = pygame.transform.scale(self.img.convert_alpha(), (120, 100))
         self.rect = self.image.get_rect()
 
-        self.x_position = x
-        self.y_position = y    
+        self.x_position = pos[0]
+        self.y_position = pos[1]    
         self.rect.center = (self.x_position, self.y_position)  # initial position:)
 
     
@@ -33,6 +34,9 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = (self.x_position, self.y_position)
 
 
-
+    def set_position(self, pos):
+        self.x_position = pos[0]
+        self.y_position = pos[1]
+        self.rect.center = (self.x_position, self.y_position)
     def get_pos(self):
         return self.x_position, self.y_position

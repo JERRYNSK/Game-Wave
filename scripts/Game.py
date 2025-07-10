@@ -57,5 +57,5 @@ while(True):
     #final
     clock_obj.tick(60)
     pygame.display.update()
-
     
+    #GOSTARIA DE AGRADECER À PROFESSORA SENHORA RENATA, POIS DEVIDO A ELA CONSEGUI FAZER DE FORMA AUTÔNOMA A PARTE MATEMÀTICA DO JOGOOOOOOOOOOO ainnnnnnnnnnn
