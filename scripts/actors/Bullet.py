@@ -1,5 +1,6 @@
 import pygame 
 class Bullet(pygame.sprite.Sprite):
+    #nao eh uma bala, agora vai ser arrow, mas blz
     #posicoes da bala e do inimigo
     x = 0
     y = 0

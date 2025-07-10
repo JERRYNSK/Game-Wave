@@ -15,7 +15,7 @@ class Enemy(pygame.sprite.Sprite):
         self.img = pygame.image.load('assets/enemy.png').convert_alpha()
         self.image = pygame.transform.scale(self.img.convert_alpha(), (120, 100))
         self.rect = self.image.get_rect()
-
+        print(pos[0],pos[1])
         self.x_position = pos[0]
         self.y_position = pos[1]    
         self.rect.center = (self.x_position, self.y_position)  # initial position:)
@@ -33,7 +33,15 @@ class Enemy(pygame.sprite.Sprite):
             self.y_position += self.direction.normalize().y * self.speed * dt
         self.rect.center = (self.x_position, self.y_position)
 
-
+    def set_life(self, value):
+        self.life -= value
+        if self.life <= 0:
+            self.kill()
+    #function that revive and set new atribuitions to enemy like life, speed...
+    def reset(self, parameter_skill):
+        self.life = 100 + parameter_skill * self.life
+        self.speed = 250 + parameter_skill * self.speed
+        self.damage = 10 + parameter_skill * self.damage
     def set_position(self, pos):
         self.x_position = pos[0]
         self.y_position = pos[1]

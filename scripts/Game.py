@@ -47,7 +47,9 @@ def actualize_groups_sprites():
     enemy_group_sprite = wave_config.get_group()
     bullet_group_sprite = player.get_bullets_sprite_group()
     #collisions handle
-    colisions = pygame.sprite.groupcollide(enemy_group_sprite, bullet_group_sprite, True, True)
+    colisions = pygame.sprite.groupcollide(enemy_group_sprite, bullet_group_sprite, False, True)
+    for enemies, bullets in colisions.items():
+        enemies.set_life(player.damage_fire)
 
 
 #loop of the paiagame

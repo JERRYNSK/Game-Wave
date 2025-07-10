@@ -12,8 +12,7 @@ class Wave():
     dead_enemies_list = []
     distance_list = []
     enemy_group = pygame.sprite.Group()
-    #locais de spawn
-    locals_spawn = [(200, -100), (400, -100) , (600, -100) , (800, -100) , (0, 700)]
+    increase = 0.01#thinks its percent
     
     
 
@@ -37,16 +36,18 @@ class Wave():
             i.set_position(self.random_position())
             self.enemy_group.add(i)
             self.enemy_group.update(screen)
+            #recharge the life>:)
+            i.reset(self.increase)
         self.dead_enemies_list = []
 
     def random_position(self):
         #coordenada x será o input
-        rand_x = random.random() * 800
-        y_output = (abs( (640000 * (2) ** (1/2)) - (rand_x * rand_x))) ** (1/2) * random.choice((-1, 1))
-        return rand_x, y_output
-
-
-
+        rand_x = random.uniform(-1, 1) * 800 + 400
+        a = 640000
+        b = (rand_x) ** 2
+        y_output = (abs((a - b)) ** 0.5) + 300
+        return rand_x, y_output * random.choice((-1, 1))
+#por algum motivo dá erro de invalid rect, pelo menos o codigo atual funciona realativamente bem:]
        
 
     def update(self, screen, player, dt):
@@ -94,3 +95,7 @@ class Wave():
 
     def get_group(self):
         return self.enemy_group
+
+
+
+#stackoverflow paga nois

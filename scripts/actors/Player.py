@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
         return self.x_position, self.y_position
 
     def fire(self, enemy, dt):
-        if enemy.distance < range_fire and self.cooldown_fire_timer > self.timer_to_fire:
+        if enemy.distance < self.range_fire and self.cooldown_fire_timer > self.timer_to_fire:
             self.bullet = Bullet(self, enemy)
             self.bullets_list.append(self.bullet)
             self.bullet_group.add(self.bullet)
@@ -81,6 +81,6 @@ class Player(pygame.sprite.Sprite):
 
 
         
-
+#nao faço ideia de como colocar sistema de cartas aq
 
 #im not throw away my shot:0
