@@ -36,11 +36,14 @@ def update_game():
     actualize_groups_sprites()
     #handle inputs
     for event in pygame.event.get():
-         if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT:
             pygame.quit()
+        if event.type == pygame.MOUSEBUTTONDOWN and not wave_config.there_enemy():
+            wave_config.set_can_spawn()
     delta_time = clock_obj.tick(60) / 1000
     #print(delta_time)
-    barlife.update(screen, player)
+    #GUI CLOGIC AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    barlife.update(screen, player, wave_config)
 
 def draw_game():
     screen.fill((0, 0, 0))
@@ -59,12 +62,15 @@ def actualize_groups_sprites():
         enemies.set_life(player.damage_fire)
 
 
+pause = False
 #loop of the paiagame
 while(True):
     draw_game()
     update_game()
     #final
+    
     clock_obj.tick(60)
+    
     pygame.display.update()
     
     #GOSTARIA DE AGRADECER À PROFESSORA SENHORA RENATA, POIS DEVIDO A ELA CONSEGUI FAZER DE FORMA AUTÔNOMA A PARTE MATEMÀTICA DO JOGOOOOOOOOOOO ainnnnnnnnnnn

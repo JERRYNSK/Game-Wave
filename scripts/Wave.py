@@ -6,7 +6,8 @@ class Wave():
     #vou usar pooling pra evitar o crash
     #variables
     can_spawn = False
-    max_enemies = 20
+    number_wave = 1
+    max_enemies = 5
     timer = 0
     enemies_list = []
     dead_enemies_list = []
@@ -39,6 +40,8 @@ class Wave():
             #recharge the life>:)
             i.reset(self.increase)
         self.dead_enemies_list = []
+        self.number_wave += 1
+        self.can_spawn = False
 
     def random_position(self):
         #coordenada x será o input
@@ -56,13 +59,16 @@ class Wave():
             i.update_game(player, dt)
         self.when_sprite_dead()
         #SE NAO HOUVER INIMIGOS, ELE DÁ SPANW, CUIDADO POHA
-        if not self.there_enemy():
+        if not self.there_enemy() and self.can_spawn:
             self.spawn_enemies(screen)
+        #se tem inimigos poem eles de volta a acao
         if self.there_enemy():
             self.enemy_group.update(screen)
             self.enemy_group.draw(screen)
 
-        
+
+    def set_can_spawn(self):
+        self.can_spawn = True
         
     def when_sprite_dead(self):
         for i in self.enemies_list:

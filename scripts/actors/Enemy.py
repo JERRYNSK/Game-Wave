@@ -9,7 +9,7 @@ class Enemy(pygame.sprite.Sprite):
     velocity_x = 0
     velocity_y = 0
     distance = 0
-    speed = 250
+    speed = 150
     damage = 10
     def __init__(self, pos):
         pygame.sprite.Sprite.__init__(self)

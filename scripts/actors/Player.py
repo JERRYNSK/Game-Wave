@@ -10,7 +10,7 @@ class Player(pygame.sprite.Sprite):
     y_position = 300
     velocity_x = 0
     velocity_y = 0
-    speed = 500
+    speed = 300
     cooldown_fire_timer = 0
     timer_to_fire = 0.1
     bullets_list = []
