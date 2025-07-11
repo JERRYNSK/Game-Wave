@@ -3,6 +3,7 @@ import pygame
 class Enemy(pygame.sprite.Sprite):
     #variables 
     life = 100
+    timer_to_attack = 0
     x_position = 100
     y_position = 100
     velocity_x = 0
@@ -15,7 +16,7 @@ class Enemy(pygame.sprite.Sprite):
         self.img = pygame.image.load('assets/enemy.png').convert_alpha()
         self.image = pygame.transform.scale(self.img.convert_alpha(), (120, 100))
         self.rect = self.image.get_rect()
-        print(pos[0],pos[1])
+        
         self.x_position = pos[0]
         self.y_position = pos[1]    
         self.rect.center = (self.x_position, self.y_position)  # initial position:)
@@ -28,9 +29,15 @@ class Enemy(pygame.sprite.Sprite):
     def move(self, player, dt):
         self.direction = pygame.Vector2(player.get_pos()[0] - self.x_position, player.get_pos()[1] - self.y_position)
         self.distance = self.direction.length()
-        if self.distance > 10:
+        if self.distance > 50:#is afastado
             self.x_position += self.direction.normalize().x * self.speed * dt
             self.y_position += self.direction.normalize().y * self.speed * dt
+            timer_to_attack = 0
+        else: #isnt afastado
+            self.timer_to_attack += dt
+            if self.timer_to_attack > 0.1:
+                player.set_life(self.damage)
+                self.timer_to_attack = 0
         self.rect.center = (self.x_position, self.y_position)
 
     def set_life(self, value):

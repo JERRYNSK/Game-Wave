@@ -85,7 +85,6 @@ class Wave():
             for i in self.enemies_list:
                 self.minor = min(self.distance_list)
                 if math.isclose(self.minor, i.distance):
-                    print(i.distance)
                     return i
                 
 

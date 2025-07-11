@@ -1,7 +1,9 @@
 #imports of that shit
 import pygame
 from Wave import Wave
+from GUI import Barlife
 from actors.Player import Player
+
 #init of game
 pygame.init()
 #variables
@@ -9,8 +11,10 @@ delta_time = 0
 width_screen = 800
 height_screen = 600
 screen = pygame.display.set_mode((width_screen, height_screen))
+background = pygame.image.load('assets/background.png')
 player = Player()
 wave_config = Wave()
+barlife = Barlife()
 
 clock_obj = pygame.time.Clock()
 #group to actors
@@ -36,9 +40,12 @@ def update_game():
             pygame.quit()
     delta_time = clock_obj.tick(60) / 1000
     #print(delta_time)
+    barlife.update(screen, player)
 
 def draw_game():
     screen.fill((0, 0, 0))
+    screen.blit(background, (0,0))
+
     #drawing group
     player_group_sprite.draw(screen)
 
