@@ -3,7 +3,7 @@ import pygame
 from Wave import Wave
 from GUI import Barlife
 from actors.Player import Player
-
+from Powers import Power
 #init of game
 pygame.init()
 #variables
@@ -17,6 +17,10 @@ wave_config = Wave()
 barlife = Barlife()
 
 clock_obj = pygame.time.Clock()
+#lista para as cartas, o player vai poder escolher um a cada wave, sem poha de re rol
+#tipos: range, max_life, cure, damage, velocity_move, velocity_attack
+cards_list = []
+cards_list.append(Power('assets/cards/card_attack_range.png', 'range', (200,300), player))
 #group to actors
 player_group_sprite = pygame.sprite.Group()
 enemy_group_sprite = pygame.sprite.Group()
@@ -34,16 +38,26 @@ def update_game():
     #updating group
     player_group_sprite.update(screen)
     actualize_groups_sprites()
+
+
+    #cartas
+    for cards in cards_list:
+        cards.update(screen, not wave_config.there_enemy())
     #handle inputs
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-        if event.type == pygame.MOUSEBUTTONDOWN and not wave_config.there_enemy():
-            wave_config.set_can_spawn()
+        #a proxima wave soh começa se escolher um poder
+        for cards in cards_list:
+            if cards.touched_power(event) and not wave_config.there_enemy():
+
+                wave_config.set_can_spawn()
+   
     delta_time = clock_obj.tick(60) / 1000
     #print(delta_time)
     #GUI CLOGIC AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     barlife.update(screen, player, wave_config)
+
 
 def draw_game():
     screen.fill((0, 0, 0))

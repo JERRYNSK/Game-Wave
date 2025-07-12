@@ -7,7 +7,7 @@ class Wave():
     #variables
     can_spawn = False
     number_wave = 1
-    max_enemies = 5
+    max_enemies = 10
     timer = 0
     enemies_list = []
     dead_enemies_list = []

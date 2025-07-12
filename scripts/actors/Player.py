@@ -4,7 +4,7 @@ class Player(pygame.sprite.Sprite):
     #variables
     max_life = 100
     life = 100
-    range_fire = 200
+    range_fire = 500
     damage_fire = 50
     x_position = 400
     y_position = 300
@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
     velocity_y = 0
     speed = 300
     cooldown_fire_timer = 0
-    timer_to_fire = 0.1
+    timer_to_fire = 0.5
     bullets_list = []
     bullet_group = pygame.sprite.Group()
     #variabls to animation
@@ -119,7 +119,16 @@ class Player(pygame.sprite.Sprite):
 
 
     def set_life(self, damage):
-        self.life -= damage
+        if self.life > 0:
+            self.life -= damage
+    def cure(self, value):
+        if self.life + value < self.max_life:
+            self.life += value
+        else:
+            self.life = self.max_life
+    def set_fire_rate(self):
+        if self.timer_to_fire > 0.01:
+            self.timer_to_fire -= 0.01
     def is_alive(self):
         return self.life > 0
     def get_bullets_sprite_group(self):
