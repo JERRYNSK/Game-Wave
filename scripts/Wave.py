@@ -75,14 +75,18 @@ class Wave():
             case 3: 
                 self.max_enemies = 5
                 self.instance_enemies()
+                self.increase = 0.05
             case 20:
                 self.max_enemies = 15
                 self.instance_enemies()
+                self.increase = 0.1
             case 30:
                 self.max_enemies = 30
                 self.instance_enemies()
+                self.increase = 0.5
             case 40:
                 self.max_enemies = 50
+                
                 self.instance_enemies()
 
     def set_can_spawn(self):

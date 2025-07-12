@@ -128,7 +128,7 @@ class Player(pygame.sprite.Sprite):
             self.life = self.max_life
     def set_fire_rate(self):
         if self.timer_to_fire > 0.01:
-            self.timer_to_fire -= 0.01
+            self.timer_to_fire -= 0.05
     def is_alive(self):
         return self.life > 0
     def get_bullets_sprite_group(self):
