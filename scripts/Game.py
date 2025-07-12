@@ -19,8 +19,39 @@ barlife = Barlife()
 clock_obj = pygame.time.Clock()
 #lista para as cartas, o player vai poder escolher um a cada wave, sem poha de re rol
 #tipos: range, max_life, cure, damage, velocity_move, velocity_attack
+scale_card = 250
+offset = 10
+offset_card = scale_card + offset#pixseis
+#cada carta eh 100x100 pixeis
+fixed_x = 135
+fixed_y = 450
 cards_list = []
-cards_list.append(Power('assets/cards/card_attack_range.png', 'range', (200,300), player))
+cards_list.append(Power('assets/cards/card_attack_range.png', 'range', (fixed_x,fixed_y - offset_card), player, scale_card))
+cards_list.append(Power('assets/cards/card_max_life.png', 'max_life', (200,fixed_y - offset_card), player, scale_card))
+cards_list.append(Power('assets/cards/card_cure.png', 'cure', (200, fixed_y - offset_card), player, scale_card))
+cards_list.append(Power('assets/cards/card_damage.png', 'damage', (fixed_x,fixed_y), player, scale_card))
+cards_list.append(Power('assets/cards/card_velocity_move.png', 'velocity_move', (200,fixed_y), player, scale_card))
+cards_list.append(Power('assets/cards/card_velocity_attack.png', 'velocity_attack', (200,fixed_y), player, scale_card))
+#for para organizar
+matriz_organize = [
+    [cards_list[0], cards_list[1], cards_list[2]],
+    [cards_list[3], cards_list[4], cards_list[5]]
+]
+
+for i in range(2):  # linhas da matriz
+    for j in range(1, 3):  # colunas a partir do segundo item (índice 1 e 2)
+        anterior = matriz_organize[i][j - 1]
+        atual = matriz_organize[i][j]
+
+        x_card = anterior.get_pos()[0] + offset_card
+        y_card = anterior.get_pos()[1]  # ou matriz_organize[i][0] se preferir
+
+        atual.set_position((x_card, y_card))
+
+
+    
+
+
 #group to actors
 player_group_sprite = pygame.sprite.Group()
 enemy_group_sprite = pygame.sprite.Group()

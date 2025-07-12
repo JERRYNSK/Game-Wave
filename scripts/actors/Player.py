@@ -4,7 +4,7 @@ class Player(pygame.sprite.Sprite):
     #variables
     max_life = 100
     life = 100
-    range_fire = 500
+    range_fire = 200
     damage_fire = 50
     x_position = 400
     y_position = 300

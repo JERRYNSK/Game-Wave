@@ -7,7 +7,8 @@ class Wave():
     #variables
     can_spawn = False
     number_wave = 1
-    max_enemies = 10
+    
+    max_enemies = 1
     timer = 0
     enemies_list = []
     dead_enemies_list = []
@@ -60,12 +61,29 @@ class Wave():
         self.when_sprite_dead()
         #SE NAO HOUVER INIMIGOS, ELE DÁ SPANW, CUIDADO POHA
         if not self.there_enemy() and self.can_spawn:
+            self.add_enemies()
             self.spawn_enemies(screen)
+            #aumenta 
         #se tem inimigos poem eles de volta a acao
         if self.there_enemy():
             self.enemy_group.update(screen)
             self.enemy_group.draw(screen)
+        
 
+    def add_enemies(self):
+        match self.number_wave:
+            case 3: 
+                self.max_enemies = 5
+                self.instance_enemies()
+            case 20:
+                self.max_enemies = 15
+                self.instance_enemies()
+            case 30:
+                self.max_enemies = 30
+                self.instance_enemies()
+            case 40:
+                self.max_enemies = 50
+                self.instance_enemies()
 
     def set_can_spawn(self):
         self.can_spawn = True
