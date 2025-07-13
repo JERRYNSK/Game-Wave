@@ -86,8 +86,11 @@ class Wave():
                 self.increase = 0.5
             case 40:
                 self.max_enemies = 50
-                
                 self.instance_enemies()
+            case 55:
+                self.max_enemies = 50
+                self.instance_enemies()
+                self.increase = 1
 
     def set_can_spawn(self):
         self.can_spawn = True
@@ -101,8 +104,7 @@ class Wave():
 
 
 
-    def update_time(self):
-        pass
+    
 
 
 
@@ -123,6 +125,20 @@ class Wave():
     def get_group(self):
         return self.enemy_group
 
-
+    #tem q resetar
+    def reset(self):
+        self.can_spawn = False
+        self.number_wave = 1
+    
+        self.max_enemies = 1
+        self.timer = 0
+        self.enemies_list = []
+        self.dead_enemies_list = []
+        self.distance_list = []
+        self.increase = 0.01#thinks its percent
+        self.enemy_group.empty()
+        self.instance_enemies()
+    
+        
 
 #stackoverflow paga nois

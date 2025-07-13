@@ -20,16 +20,20 @@ class Player(pygame.sprite.Sprite):
     index_frame = 0
     list_sprite_animation = []
     dead_sprite = None
+    #sound
+    sound_fire = None
 
 
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        pygame.mixer.init()
         self.img = pygame.image.load('assets/player.png').convert_alpha()
         self.dead_sprite = pygame.image.load('assets/player_animation/player_dead.png').convert_alpha()
         self.image = pygame.transform.scale(self.img.convert_alpha(), (75, 75))
         self.rect = self.image.get_rect()
         self.rect.center = (self.x_position, self.y_position)  # initial position ;-;
+        self.sound_fire = pygame.mixer.Sound('assets/sounds/shot.wav')
         self.load_frames()
     
     def load_frames(self):
@@ -64,22 +68,18 @@ class Player(pygame.sprite.Sprite):
 
 
     def move(self, dt):
-        global x_position
-        global y_position
-        global velocity_x
-        global velocity_y
-
+        
         self.keys = pygame.key.get_pressed()
         
-        if self.keys[pygame.K_w]:
+        if self.keys[pygame.K_w] or self.keys[pygame.K_UP]:
             self.velocity_y = - 1
-        elif self.keys[pygame.K_s]:
+        elif self.keys[pygame.K_s]or self.keys[pygame.K_DOWN]:
             self.velocity_y = 1
         else:
             self.velocity_y = 0
-        if self.keys[pygame.K_d]:
+        if self.keys[pygame.K_d] or self.keys[pygame.K_RIGHT]:
             self.velocity_x = 1
-        elif self.keys[pygame.K_a]:
+        elif self.keys[pygame.K_a] or self.keys[pygame.K_LEFT]:
             self.velocity_x = -1
         else:
             self.velocity_x = 0
@@ -89,7 +89,16 @@ class Player(pygame.sprite.Sprite):
             self.normalized_move = pygame.Vector2(self.velocity_x, self.velocity_y).normalize()
             self.x_position += self.normalized_move.x * self.speed * dt
             self.y_position += self.normalized_move.y * self.speed * dt
-
+        #NAO PODE PASSAR DAS BARREIRAS
+        scale_player = 75/2
+        if self.x_position < scale_player:
+            self.x_position = scale_player
+        elif self.x_position > 800 - scale_player:
+            self.x_position = 800 - scale_player
+        if self.y_position < scale_player:
+            self.y_position = scale_player
+        elif self.y_position > 600 - scale_player:
+            self.y_position = 600 - scale_player
         self.rect.center = (self.x_position, self.y_position)#actualize the position
 
 
@@ -110,6 +119,7 @@ class Player(pygame.sprite.Sprite):
             self.bullet = Bullet(self, enemy)
             self.bullets_list.append(self.bullet)
             self.bullet_group.add(self.bullet)
+            self.sound_fire.play()
             self.cooldown_fire_timer = 0
         else:
             self.cooldown_fire_timer += 0.01
@@ -130,9 +140,27 @@ class Player(pygame.sprite.Sprite):
         if self.timer_to_fire > 0.01:
             self.timer_to_fire -= 0.05
     def is_alive(self):
-        return self.life > 0
+        return self.life >= 0
     def get_bullets_sprite_group(self):
         return self.bullet_group
+    
+    #quando o jogo acabar tem q resetar
+    def reset(self):
+        self.max_life = 100
+        self.life = 100
+        self.range_fire = 200
+        self.damage_fire = 50
+        self.x_position = 400
+        self.y_position = 300
+        self.velocity_x = 0
+        self.velocity_y = 0
+        self.speed = 300
+        self.cooldown_fire_timer = 0
+        self.timer_to_fire = 0.5
+
+        self.timer_to_frame = 0
+        self.index_frame = 0
+        
 
 
 

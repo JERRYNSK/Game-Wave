@@ -5,6 +5,7 @@ class Power(pygame.sprite.Sprite):
     font = None
     screen = None
     player = None
+    is_max = False
     def __init__(self, path_img, type_power, position, player, scale):#position vai ser uma tupla fds
         pygame.sprite.Sprite.__init__(self)
         pygame.font.init()
@@ -20,15 +21,26 @@ class Power(pygame.sprite.Sprite):
 
     
     def update(self, screen, candraw):
-        if candraw:
+        if candraw and not self.is_max:
             screen.blit(self.image, self.rect)
         self.screen = screen
-        if self.is_mouse_in_area() and candraw:
-            pygame.draw.rect(self.screen, 'white', self.rect, 1)
+        if self.is_mouse_in_area() and candraw and not self.is_max:
+            pygame.draw.rect(self.screen, 'white', self.rect, 3)
+        #se a ahabilidade está maximixaa, desativa a carta
+        #max life, cure, serao inifinitos
+        match self.my_type:
+            case 'range': 
+                self.is_max = self.player.range_fire > 600
+            case 'damage': 
+                self.is_max = self.player.damage_fire >= 200 
+            case 'velocity_move': 
+                self.is_max = self.player.speed > 1000
+            case 'velocity_attack': 
+                self.is_max = self.player.timer_to_fire < 0.01
 
 
-    def touched_power(self, input):
-        if self.is_mouse_in_area() and input.type == pygame.MOUSEBUTTONDOWN:
+    def touched_power(self, input, can_give_power):
+        if self.is_mouse_in_area() and input.type == pygame.MOUSEBUTTONDOWN and can_give_power and not self.is_max:
             self.give_power(self.my_type)
             return True
         return False
@@ -40,7 +52,7 @@ class Power(pygame.sprite.Sprite):
             case 'max_life': self.player.max_life += random.choice((50,100))
             case 'cure': self.player.cure(50)
             case 'damage': self.player.damage_fire += 50
-            case 'velocity_move': self.player.speed += 15
+            case 'velocity_move': self.player.speed += 50
             case 'velocity_attack': self.player.set_fire_rate()
             
 
@@ -55,3 +67,6 @@ class Power(pygame.sprite.Sprite):
         self.rect.y = pos[1]
     def get_pos(self):
         return self.rect
+
+    def reset(self):
+        self.is_max = False
