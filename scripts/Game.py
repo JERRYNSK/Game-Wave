@@ -16,7 +16,7 @@ width_screen = 800
 height_screen = 600
 screen = pygame.display.set_mode((width_screen, height_screen), pygame.RESIZABLE | pygame.SCALED)
 pygame.display.set_caption('60 WAVES WITH FREDERICO')
-#sound
+#sound do menu
 pygame.mixer.music.load('assets/sounds/music_menu.mp3')
 
 background = pygame.image.load('assets/background.png')
@@ -86,7 +86,8 @@ def update_game():
         state = 'lose'
     #se cehgar a wave 60 e n tiver inimigod venceu
     if wave_config.number_wave > 59 and not wave_config.there_enemy():
-        state = 'winned'
+        pygame.mixer.music.load('assets/sounds/music_won.mp3')
+        state = 'won'
 
     #cartas
     for cards in cards_list:
@@ -138,6 +139,9 @@ def update_general():
             player.reset()
             wave_config.reset()
             state = 'game'
+        #musica toca
+        if not pygame.mixer.music.get_busy() and state != 'lose':
+            pygame.mixer.music.play(-1)
 
 #loop of the paiagame
 while(True):
@@ -146,9 +150,7 @@ while(True):
         case 'menu':
             menu.update(screen)
             update_general()
-            #musica do menu toca
-            if not pygame.mixer.music.get_busy():
-                pygame.mixer.music.play(-1)
+            
         case 'game':
             draw_game()
             update_game()
@@ -158,7 +160,7 @@ while(True):
             lose.update(screen)
             update_general()
 
-        case 'winned':
+        case 'won':
             win.update(screen)
             update_general()
     #final
