@@ -3,7 +3,7 @@ from actors.Bullet import Bullet
 class Player(pygame.sprite.Sprite):
     #variables
     max_life = 100
-    life = 100
+    life = 20
     range_fire = 200
     damage_fire = 50
     x_position = 400
@@ -129,7 +129,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def set_life(self, damage):
-        if self.life > 0:
+        if self.life >= 0:
             self.life -= damage
     def cure(self, value):
         if self.life + value < self.max_life:
