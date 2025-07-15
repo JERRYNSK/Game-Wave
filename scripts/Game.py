@@ -1,5 +1,6 @@
 #imports of that shit
 import pygame
+import random
 from Wave import Wave
 from GUI import Barlife, Menu_game, Menu_lose, Menu_win
 from actors.Player import Player
@@ -34,30 +35,26 @@ scale_card = 250
 offset = 10
 offset_card = scale_card + offset#pixseis
 #cada carta eh 100x100 pixeis
-fixed_x = 135
-fixed_y = 450
+fixed_x = 0
+fixed_y = 300
 cards_list = []
-cards_list.append(Power('assets/cards/card_attack_range.png', 'range', (fixed_x,fixed_y - offset_card), player, scale_card))
-cards_list.append(Power('assets/cards/card_max_life.png', 'max_life', (200,fixed_y - offset_card), player, scale_card))
-cards_list.append(Power('assets/cards/card_cure.png', 'cure', (200, fixed_y - offset_card), player, scale_card))
+cards_list.append(Power('assets/cards/card_attack_range.png', 'range', (fixed_x,fixed_y), player, scale_card))
+cards_list.append(Power('assets/cards/card_max_life.png', 'max_life', (fixed_x,fixed_y), player, scale_card))
+cards_list.append(Power('assets/cards/card_cure.png', 'cure', (fixed_x, fixed_y), player, scale_card))
 cards_list.append(Power('assets/cards/card_damage.png', 'damage', (fixed_x,fixed_y), player, scale_card))
-cards_list.append(Power('assets/cards/card_velocity_move.png', 'velocity_move', (200,fixed_y), player, scale_card))
-cards_list.append(Power('assets/cards/card_velocity_attack.png', 'velocity_attack', (200,fixed_y), player, scale_card))
+cards_list.append(Power('assets/cards/card_velocity_move.png', 'velocity_move', (fixed_x,fixed_y), player, scale_card))
+cards_list.append(Power('assets/cards/card_velocity_attack.png', 'velocity_attack', (fixed_x,fixed_y), player, scale_card))
 #for para organizar
-matriz_organize = [
-    [cards_list[0], cards_list[1], cards_list[2]],
-    [cards_list[3], cards_list[4], cards_list[5]]
-]
+list_cards_to_use = []
+list_cards_to_use.append(random.choice(cards_list))
+list_cards_to_use.append(random.choice(cards_list))
+list_cards_to_use.append(random.choice(cards_list))
 
-for i in range(2):  # linhas da matriz
-    for j in range(1, 3):  # colunas a partir do segundo item (índice 1 e 2)
-        anterior = matriz_organize[i][j - 1]
-        atual = matriz_organize[i][j]
 
-        #x_card = anterior.get_pos()[0] + offset_card
-        #y_card = anterior.get_pos()[1]  # ou matriz_organize[i][0] se preferir
-
-        atual.set_position((x_card, y_card))
+for i in range(3): 
+    list_cards_to_use[i].set_position((offset, fixed_y))
+    offset += 275
+    
 
 
     
@@ -90,7 +87,7 @@ def update_game():
         state = 'won'
 
     #cartas
-    for cards in cards_list:
+    for cards in list_cards_to_use:
         cards.update(screen, not wave_config.there_enemy())
     #handle inputs
     for event in pygame.event.get():
