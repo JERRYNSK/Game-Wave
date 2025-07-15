@@ -54,8 +54,8 @@ for i in range(2):  # linhas da matriz
         anterior = matriz_organize[i][j - 1]
         atual = matriz_organize[i][j]
 
-        x_card = anterior.get_pos()[0] + offset_card
-        y_card = anterior.get_pos()[1]  # ou matriz_organize[i][0] se preferir
+        #x_card = anterior.get_pos()[0] + offset_card
+        #y_card = anterior.get_pos()[1]  # ou matriz_organize[i][0] se preferir
 
         atual.set_position((x_card, y_card))
 
