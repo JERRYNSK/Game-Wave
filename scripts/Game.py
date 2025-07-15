@@ -44,16 +44,30 @@ cards_list.append(Power('assets/cards/card_cure.png', 'cure', (fixed_x, fixed_y)
 cards_list.append(Power('assets/cards/card_damage.png', 'damage', (fixed_x,fixed_y), player, scale_card))
 cards_list.append(Power('assets/cards/card_velocity_move.png', 'velocity_move', (fixed_x,fixed_y), player, scale_card))
 cards_list.append(Power('assets/cards/card_velocity_attack.png', 'velocity_attack', (fixed_x,fixed_y), player, scale_card))
-#for para organizar
 list_cards_to_use = []
-list_cards_to_use.append(random.choice(cards_list))
-list_cards_to_use.append(random.choice(cards_list))
-list_cards_to_use.append(random.choice(cards_list))
+#funcao para escolher 3 crtas aleatriias
+list_cards_to_use.append(cards_list[0])
+list_cards_to_use.append(cards_list[0])
+list_cards_to_use.append(cards_list[0])
+def choices_cards():
+    global offset
+    global list_cards_to_use
+    list_cards_to_use[0] = cards_list[0]
+    list_cards_to_use[1] = cards_list[0]
+    list_cards_to_use[2] = cards_list[0]
+    offset = 10
+    while list_cards_to_use[0] == list_cards_to_use[1] or  list_cards_to_use[0] == list_cards_to_use[2] or  list_cards_to_use[1] == list_cards_to_use[2]:
+        list_cards_to_use[0] = random.choice(cards_list)
+        list_cards_to_use[1] = random.choice(cards_list)
+        list_cards_to_use[2] = random.choice(cards_list)
+    for i in range(3): 
+        list_cards_to_use[i].set_position((offset, fixed_y))
+        offset += 275
+#vetor para fzer random das cards
+choices_cards()
 
 
-for i in range(3): 
-    list_cards_to_use[i].set_position((offset, fixed_y))
-    offset += 275
+
     
 
 
@@ -72,6 +86,7 @@ player_group_sprite.add(player)
 def update_game():
     global delta_time
     global state
+
     #wave config
     player.update_game(screen, wave_config.nearest_enemy(player), wave_config.there_enemy(), delta_time)
     wave_config.update(screen, player, delta_time)
@@ -86,6 +101,10 @@ def update_game():
         pygame.mixer.music.load('assets/sounds/music_won.mp3')
         state = 'won'
 
+    #retira as cartas max
+    for card in cards_list:
+        if card.is_max:
+            cards_list.remove(card)
     #cartas
     for cards in list_cards_to_use:
         cards.update(screen, not wave_config.there_enemy())
@@ -95,15 +114,17 @@ def update_game():
             pygame.quit()
         #a proxima wave soh começa se escolher um poder
         #e soh pode ter um poder se nao houver inimigos tmb neh
-        for cards in cards_list:
+        for cards in list_cards_to_use:
             if cards.touched_power(event,not wave_config.there_enemy()) and not wave_config.there_enemy():
-
                 wave_config.set_can_spawn()
+                choices_cards()
    
     delta_time = clock_obj.tick(60) / 1000
     #print(delta_time)
     #GUI CLOGIC AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     barlife.update(screen, player, wave_config)
+
+
 
 
 def draw_game():
