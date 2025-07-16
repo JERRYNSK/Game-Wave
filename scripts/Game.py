@@ -56,14 +56,20 @@ def choices_cards():
     list_cards_to_use[1] = cards_list[0]
     list_cards_to_use[2] = cards_list[0]
     offset = 10
-    while list_cards_to_use[0] == list_cards_to_use[1] or  list_cards_to_use[0] == list_cards_to_use[2] or  list_cards_to_use[1] == list_cards_to_use[2]:
-        list_cards_to_use[0] = random.choice(cards_list)
-        list_cards_to_use[1] = random.choice(cards_list)
-        list_cards_to_use[2] = random.choice(cards_list)
-    for i in range(3): 
-        list_cards_to_use[i].set_position((offset, fixed_y))
-        offset += 275
-#vetor para fzer random das cards
+    number_cards = len(cards_list)
+    if number_cards > 2:
+        while list_cards_to_use[0] == list_cards_to_use[1] or  list_cards_to_use[0] == list_cards_to_use[2] or  list_cards_to_use[1] == list_cards_to_use[2]:
+            list_cards_to_use[0] = random.choice(cards_list)
+            list_cards_to_use[1] = random.choice(cards_list)
+            list_cards_to_use[2] = random.choice(cards_list)
+        
+        for i in range(3): 
+            list_cards_to_use[i].set_position((offset, fixed_y))
+            offset += 275
+    else:
+        list_cards_to_use[i].set_position((10, fixed_y))
+        list_cards_to_use[i].set_position((275, fixed_y))
+        
 choices_cards()
 
 
