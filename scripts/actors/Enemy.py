@@ -13,9 +13,12 @@ class Enemy(pygame.sprite.Sprite):
     damage = 10
     #sound
     sound_die = None
-    def __init__(self, pos):
+    #tipo de inimigo vao ser tres: os normais, os explosivos e atiradores
+    type_enemy = None
+    def __init__(self, pos, typeof = 'normal'):
         pygame.sprite.Sprite.__init__(self)
         pygame.mixer.init()
+        type_enemy = typeof
         self.img = pygame.image.load('assets/enemy.png').convert_alpha()
         self.image = pygame.transform.scale(self.img.convert_alpha(), (120, 100))
         self.rect = self.image.get_rect()
