@@ -29,7 +29,7 @@ lose = Menu_lose()
 win = Menu_win()
 
 clock_obj = pygame.time.Clock()
-#lista para as cartas, o player vai poder escolher um a cada wave, sem poha de re rol
+#lista para as cartas, o player vai poder escolher um a cada wave, sem poha de re roll
 #tipos: range, max_life, cure, damage, velocity_move, velocity_attack
 scale_card = 250
 offset = 10
@@ -46,32 +46,34 @@ cards_list.append(Power('assets/cards/card_velocity_move.png', 'velocity_move', 
 cards_list.append(Power('assets/cards/card_velocity_attack.png', 'velocity_attack', (fixed_x,fixed_y), player, scale_card))
 list_cards_to_use = []
 #funcao para escolher 3 crtas aleatriias
-list_cards_to_use.append(cards_list[0])
-list_cards_to_use.append(cards_list[0])
-list_cards_to_use.append(cards_list[0])
+#function
 def choices_cards():
     global offset
     global list_cards_to_use
-    list_cards_to_use[0] = cards_list[0]
-    list_cards_to_use[1] = cards_list[0]
-    list_cards_to_use[2] = cards_list[0]
+    global cards_list
     offset = 10
     number_cards = len(cards_list)
+    #retira as cartas max
+    # for card in cards_list:
+    #     if card.is_max:
+    #         cards_list.remove(card)
+    #         list_cards_to_use.remove(card)
+    cards_list = [card for card in cards_list if not card.is_max]
     if number_cards > 2:
-        while list_cards_to_use[0] == list_cards_to_use[1] or  list_cards_to_use[0] == list_cards_to_use[2] or  list_cards_to_use[1] == list_cards_to_use[2]:
-            list_cards_to_use[0] = random.choice(cards_list)
-            list_cards_to_use[1] = random.choice(cards_list)
-            list_cards_to_use[2] = random.choice(cards_list)
-        
+
+        list_cards_to_use = random.sample(cards_list, 3)
         for i in range(3): 
+
             list_cards_to_use[i].set_position((offset, fixed_y))
             offset += 275
     else:
-        list_cards_to_use[i].set_position((10, fixed_y))
-        list_cards_to_use[i].set_position((275, fixed_y))
+        list_cards_to_use = random.sample(cards_list, 2)
+    for i in range(3):
+        print(list_cards_to_use[i].my_type)
+    print('#################')
+        
         
 choices_cards()
-
 
 
     
@@ -107,13 +109,12 @@ def update_game():
         pygame.mixer.music.load('assets/sounds/music_won.mp3')
         state = 'won'
 
-    #retira as cartas max
-    for card in cards_list:
-        if card.is_max:
-            cards_list.remove(card)
+
     #cartas
     for cards in list_cards_to_use:
         cards.update(screen, not wave_config.there_enemy())
+    for cards in cards_list:
+        cards.update_alllcards()
     #handle inputs
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -145,12 +146,14 @@ def actualize_groups_sprites():
     enemy_group_sprite = wave_config.get_group()
     bullet_group_sprite = player.get_bullets_sprite_group()
     #collisions handle
+    #essa colisao ocorre com o grupo de balas do player com os inimigos
     colisions = pygame.sprite.groupcollide(enemy_group_sprite, bullet_group_sprite, False, True)
     for enemies, bullets in colisions.items():
         enemies.set_life(player.damage_fire)
+    
 
 #vou fazer uma function update geral pq to com medo de lascar tudo kakakakak
-#ur dur tenho q evocar uma palavra reservada numa funcao PRA MUDAR UMA VARIAVEL LLOCAL MDSSSS
+#ur dur tenho q evocar uma palavra reservada numa funcao PRA MUDAR UMA VARIAVEL GLOBAL
 def update_general():
     global state
     for event in pygame.event.get():
@@ -193,7 +196,7 @@ while(True):
     
     pygame.display.update()
     
-    #GOSTARIA DE AGRADECER À PROFESSORA SENHORA RENATA, POIS DEVIDO A ELA CONSEGUI FAZER DE FORMA AUTÔNOMA A PARTE MATEMÀTICA DO JOGOOOOOOOOOOO ainnnnnnnnnnn
+#obg, prof Renata
 #nah, odeio paiagame
 #mdssssss to despendendo    tempo dms aq, tenho q estudar cálculo e geometria analiticaaaaaaaaaaaaaaaaaaaaaa
-#love 2d é bem melhor, tipo x tendendo a 0 e sobre 1
+#love 2d é bem melhor, tipo x tendendo a 0 numa fração lá

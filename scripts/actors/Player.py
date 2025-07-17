@@ -125,7 +125,7 @@ class Player(pygame.sprite.Sprite):
             self.cooldown_fire_timer += 0.01
         if self.bullets_list:
             for i in self.bullets_list:
-                i.move(self, dt)
+                i.move(dt)
 
 
     def set_life(self, damage):

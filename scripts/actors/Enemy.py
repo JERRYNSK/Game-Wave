@@ -11,14 +11,15 @@ class Enemy(pygame.sprite.Sprite):
     distance = 0
     speed = 150
     damage = 10
+    playerclass = None
     #sound
     sound_die = None
-    #tipo de inimigo vao ser tres: os normais, os explosivos e atiradores
+    #inimigos normais, explosivos e atiraadores
     type_enemy = None
     def __init__(self, pos, typeof = 'normal'):
         pygame.sprite.Sprite.__init__(self)
         pygame.mixer.init()
-        type_enemy = typeof
+        self.type_enemy = typeof
         self.img = pygame.image.load('assets/enemy.png').convert_alpha()
         self.image = pygame.transform.scale(self.img.convert_alpha(), (120, 100))
         self.rect = self.image.get_rect()
@@ -30,7 +31,8 @@ class Enemy(pygame.sprite.Sprite):
 
     
     def update_game(self, player, dt):
-       self.move(player, dt)
+        self.playerclass = player
+        self.move(player, dt)
 
 
     def move(self, player, dt):
@@ -49,9 +51,12 @@ class Enemy(pygame.sprite.Sprite):
 
     def set_life(self, value):
         self.life -= value
-        if self.life <= 0.0:
+        if self.life <= 0.0 and self.type_enemy == 'normal':
             self.sound_die.play()
             self.kill()
+        elif self.life <= 0 and self.type_enemy == 'explosive':
+            self.kill()
+
     #function that revive and set new atribuitions to enemy like life, speed...
     def reset(self, parameter_skill):
         self.life = 100 + parameter_skill * 100

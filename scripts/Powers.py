@@ -26,8 +26,11 @@ class Power(pygame.sprite.Sprite):
         self.screen = screen
         if self.is_mouse_in_area() and candraw and not self.is_max:
             pygame.draw.rect(self.screen, 'white', self.rect, 3)
+       
+    def update_alllcards(self):
         #se a ahabilidade está maximixaa, desativa a carta
         #max life, cure, serao inifinitos
+
         match self.my_type:
             case 'range': 
                 self.is_max = self.player.range_fire > 600
