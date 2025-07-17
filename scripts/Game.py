@@ -52,23 +52,21 @@ def choices_cards():
     global list_cards_to_use
     global cards_list
     offset = 10
-    number_cards = len(cards_list)
-    #retira as cartas max
-    # for card in cards_list:
-    #     if card.is_max:
-    #         cards_list.remove(card)
-    #         list_cards_to_use.remove(card)
-    cards_list = [card for card in cards_list if not card.is_max]
+
+    no_max_cards = [card for card in cards_list if not card.is_max]
+    number_cards = len(no_max_cards)
+    
     if number_cards > 2:
-
-        list_cards_to_use = random.sample(cards_list, 3)
+        list_cards_to_use = random.sample(no_max_cards, 3)
         for i in range(3): 
-
             list_cards_to_use[i].set_position((offset, fixed_y))
             offset += 275
     else:
-        list_cards_to_use = random.sample(cards_list, 2)
-    for i in range(3):
+        list_cards_to_use = random.sample(no_max_cards, 2)
+        for i in range(2):
+            list_cards_to_use[i].set_position((offset, fixed_y))
+            offset += 275
+    for i in range(len(list_cards_to_use)):
         print(list_cards_to_use[i].my_type)
     print('#################')
         
@@ -113,8 +111,11 @@ def update_game():
     #cartas
     for cards in list_cards_to_use:
         cards.update(screen, not wave_config.there_enemy())
+    #atualiza quais cartas estao maximizadas
     for cards in cards_list:
         cards.update_alllcards()
+    
+   
     #handle inputs
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

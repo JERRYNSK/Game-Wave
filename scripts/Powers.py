@@ -39,7 +39,7 @@ class Power(pygame.sprite.Sprite):
             case 'velocity_move': 
                 self.is_max = self.player.speed > 1000
             case 'velocity_attack': 
-                self.is_max = self.player.timer_to_fire < 0.01
+                self.is_max = self.player.timer_to_fire <= 0.01
 
 
     def touched_power(self, input, can_give_power):
