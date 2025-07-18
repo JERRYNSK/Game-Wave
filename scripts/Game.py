@@ -51,12 +51,19 @@ def choices_cards():
     global offset
     global list_cards_to_use
     global cards_list
+
+    #atualiza as cartas
+    for i in range(len(cards_list)):
+        cards_list[i].player = player
+        cards_list[i].update_max() 
+
+
     offset = 10
 
-    no_max_cards = [card for card in cards_list if not card.is_max in cards_list]
-    # for i in no_max_cards:
-    #     print(i.my_type)
-    # print(' ##################################')
+    no_max_cards = [card for card in cards_list if not card.is_max]
+    for i in no_max_cards:
+        print(i.my_type)
+    print(' ##################################')
     number_cards = len(no_max_cards)
     
     if number_cards > 2:
@@ -105,9 +112,6 @@ def update_game():
     for cards in list_cards_to_use:
         cards.update(screen, not wave_config.there_enemy())
     
-    for i in range(len(cards_list)):
-        cards_list[i].player = player
-        cards_list[i].update_max()
 
    
     #handle inputs
