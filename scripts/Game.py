@@ -34,7 +34,6 @@ clock_obj = pygame.time.Clock()
 scale_card = 250
 offset = 10
 offset_card = scale_card + offset#pixseis
-#cada carta eh 100x100 pixeis
 fixed_x = 0
 fixed_y = 300
 cards_list = []
@@ -45,6 +44,7 @@ cards_list.append(Power('assets/cards/card_damage.png', 'damage', (fixed_x,fixed
 cards_list.append(Power('assets/cards/card_velocity_move.png', 'velocity_move', (fixed_x,fixed_y), player, scale_card))
 cards_list.append(Power('assets/cards/card_velocity_attack.png', 'velocity_attack', (fixed_x,fixed_y), player, scale_card))
 list_cards_to_use = []
+no_max_cards = []
 #funcao para escolher 3 crtas aleatriias
 #function
 def choices_cards():
@@ -53,32 +53,25 @@ def choices_cards():
     global cards_list
     offset = 10
 
-    no_max_cards = [card for card in cards_list if not card.is_max]
+    no_max_cards = [card for card in cards_list if not card.is_max in cards_list]
+    # for i in no_max_cards:
+    #     print(i.my_type)
+    # print(' ##################################')
     number_cards = len(no_max_cards)
     
     if number_cards > 2:
         list_cards_to_use = random.sample(no_max_cards, 3)
-        for i in range(3): 
-            list_cards_to_use[i].set_position((offset, fixed_y))
-            offset += 275
-    else:
-        list_cards_to_use = random.sample(no_max_cards, 2)
-        for i in range(2):
-            list_cards_to_use[i].set_position((offset, fixed_y))
-            offset += 275
-    for i in range(len(list_cards_to_use)):
-        print(list_cards_to_use[i].my_type)
-    print('#################')
-        
-        
+
+        for i in range(len(no_max_cards)):
+            for j in range(len(list_cards_to_use)):
+                if no_max_cards[i].my_type == list_cards_to_use[j].my_type:
+                    list_cards_to_use[j].set_position((offset, fixed_y))
+                    offset += scale_card
+                    break
+                #a carta vai ficar longe pra caramba pro player nao apertar kkkkkkk
+                no_max_cards[i].set_position((0,0))   
+    
 choices_cards()
-
-
-    
-
-
-    
-
 
 #group to actors
 player_group_sprite = pygame.sprite.Group()
@@ -111,10 +104,11 @@ def update_game():
     #cartas
     for cards in list_cards_to_use:
         cards.update(screen, not wave_config.there_enemy())
-    #atualiza quais cartas estao maximizadas
-    for cards in cards_list:
-        cards.update_alllcards()
     
+    for i in range(len(cards_list)):
+        cards_list[i].player = player
+        cards_list[i].update_max()
+
    
     #handle inputs
     for event in pygame.event.get():
@@ -124,6 +118,9 @@ def update_game():
         #e soh pode ter um poder se nao houver inimigos tmb neh
         for cards in list_cards_to_use:
             if cards.touched_power(event,not wave_config.there_enemy()) and not wave_config.there_enemy():
+
+
+
                 wave_config.set_can_spawn()
                 choices_cards()
    

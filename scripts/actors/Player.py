@@ -148,15 +148,15 @@ class Player(pygame.sprite.Sprite):
     def reset(self):
         self.max_life = 100
         self.life = 20
-        self.range_fire = 1000
-        self.damage_fire = 200
+        self.range_fire = 200
+        self.damage_fire = 50
         self.x_position = 400
         self.y_position = 300
         self.velocity_x = 0
         self.velocity_y = 0
-        self.speed = 3100
+        self.speed = 300
         self.cooldown_fire_timer = 0
-        self.timer_to_fire = 0.01
+        self.timer_to_fire = 0.5
 
         self.timer_to_frame = 0
         self.index_frame = 0
