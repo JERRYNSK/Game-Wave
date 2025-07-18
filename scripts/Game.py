@@ -122,9 +122,6 @@ def update_game():
         #e soh pode ter um poder se nao houver inimigos tmb neh
         for cards in list_cards_to_use:
             if cards.touched_power(event,not wave_config.there_enemy()) and not wave_config.there_enemy():
-
-
-
                 wave_config.set_can_spawn()
                 choices_cards()
    
