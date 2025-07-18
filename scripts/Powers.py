@@ -26,6 +26,12 @@ class Power(pygame.sprite.Sprite):
         self.screen = screen
         if self.is_mouse_in_area() and candraw and not self.is_max:
             pygame.draw.rect(self.screen, 'white', self.rect, 3)
+        self.update_max()
+
+
+
+        
+    def update_max(self):
         #se a ahabilidade está maximixaa, desativa a carta
         #max life, cure, serao inifinitos
         match self.my_type:
@@ -36,7 +42,7 @@ class Power(pygame.sprite.Sprite):
             case 'velocity_move': 
                 self.is_max = self.player.speed > 1000
             case 'velocity_attack': 
-                self.is_max = self.player.timer_to_fire < 0.01
+                self.is_max = self.player.timer_to_fire <= 0.01
 
 
     def touched_power(self, input, can_give_power):
@@ -48,12 +54,24 @@ class Power(pygame.sprite.Sprite):
     def give_power(self, type_power):
         #obrigado switch case  por existir te amoooo
         match type_power:
-            case 'range': self.player.range_fire += 50
-            case 'max_life': self.player.max_life += random.choice((50,100))
-            case 'cure': self.player.cure(50)
-            case 'damage': self.player.damage_fire += 50
-            case 'velocity_move': self.player.speed += 50
-            case 'velocity_attack': self.player.set_fire_rate()
+            case 'range': 
+                self.player.range_fire += 50
+                print('range')
+            case 'max_life': 
+                self.player.max_life += random.choice((50,100))
+                print('max vida')
+            case 'cure': 
+                self.player.cure(50)
+                print('cura')
+            case 'damage': 
+                self.player.damage_fire += 50
+                print('dano')
+            case 'velocity_move': 
+                self.player.speed += 50
+                print('movimento rapido')
+            case 'velocity_attack': 
+                self.player.set_fire_rate()
+                print('ataque rapido')
             
 
 

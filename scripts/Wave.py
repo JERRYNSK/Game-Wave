@@ -22,11 +22,14 @@ class Wave():
         self.instance_enemies()
 
            
-    def instance_enemies(self):
+    def instance_enemies(self, bool = False):
         for i in range(self.max_enemies):
-            self.enemies_list.append(Enemy(self.random_position()))
-            self.distance_list.append(0)
-             
+            if bool:
+                self.enemies_list.append(Enemy(self.random_position()))
+                self.distance_list.append(0)
+            else:
+                self.enemies_list.append(Enemy(self.random_position(), 'explosive'))
+                self.distance_list.append(0)
         for i in self.enemies_list:
             self.enemy_group.add(i)
 
@@ -74,7 +77,7 @@ class Wave():
         match self.number_wave:
             case 3: 
                 self.max_enemies = 5
-                self.instance_enemies()
+                self.instance_enemies(True)
                 self.increase = 0.05
             case 20:
                 self.max_enemies = 15
