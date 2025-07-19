@@ -17,6 +17,7 @@ width_screen = 800
 height_screen = 600
 screen = pygame.display.set_mode((width_screen, height_screen), pygame.RESIZABLE | pygame.SCALED)
 pygame.display.set_caption('60 WAVES WITH FREDERICO')
+number_control_wave = 0
 #sound do menu
 pygame.mixer.music.load('assets/sounds/music_menu.mp3')
 
@@ -36,6 +37,7 @@ offset = 10
 offset_card = scale_card + offset#pixseis
 fixed_x = 0
 fixed_y = 300
+#lista root de cartas
 cards_list = []
 cards_list.append(Power('assets/cards/card_attack_range.png', 'range', (fixed_x,fixed_y), player, scale_card))
 cards_list.append(Power('assets/cards/card_max_life.png', 'max_life', (fixed_x,fixed_y), player, scale_card))
@@ -43,40 +45,44 @@ cards_list.append(Power('assets/cards/card_cure.png', 'cure', (fixed_x, fixed_y)
 cards_list.append(Power('assets/cards/card_damage.png', 'damage', (fixed_x,fixed_y), player, scale_card))
 cards_list.append(Power('assets/cards/card_velocity_move.png', 'velocity_move', (fixed_x,fixed_y), player, scale_card))
 cards_list.append(Power('assets/cards/card_velocity_attack.png', 'velocity_attack', (fixed_x,fixed_y), player, scale_card))
+#cartas selecionadas para escolher da lista root
 list_cards_to_use = []
+#cartas nao maximixadas
 no_max_cards = []
+
 #funcao para escolher 3 crtas aleatriias
-#function
 def choices_cards():
     global offset
     global list_cards_to_use
     global cards_list
 
-    #atualiza as cartas
+    #atualiza as cartas para ver se alguma é maximixada
     for i in range(len(cards_list)):
         cards_list[i].player = player
         cards_list[i].update_max() 
 
 
     offset = 10
-
+    #comprensão de lista, pega somente as cartas nao maximizadas da lista root
     no_max_cards = [card for card in cards_list if not card.is_max]
+
+    if len(no_max_cards) > 2:
+        list_cards_to_use = random.sample(no_max_cards, 3)
+    else:
+        list_cards_to_use = random.sample(no_max_cards, 2)
+
+        #debug
     for i in no_max_cards:
         print(i.my_type)
     print(' ##################################')
-    number_cards = len(no_max_cards)
+    for card in cards_list:
+        card.set_position((10000,10000))
     
-    if number_cards > 2:
-        list_cards_to_use = random.sample(no_max_cards, 3)
-
-        for i in range(len(no_max_cards)):
-            for j in range(len(list_cards_to_use)):
-                if no_max_cards[i].my_type == list_cards_to_use[j].my_type:
-                    list_cards_to_use[j].set_position((offset, fixed_y))
-                    offset += scale_card
-                    break
-                #a carta vai ficar longe pra caramba pro player nao apertar kkkkkkk
-                no_max_cards[i].set_position((0,0))   
+    for i in range(len(cards_list)):
+        for j in range(len(list_cards_to_use)):
+            if cards_list[i].my_type == list_cards_to_use[j].my_type:         
+                cards_list[i].set_position((offset, fixed_y))
+                offset += scale_card
     
 choices_cards()
 
@@ -92,6 +98,7 @@ player_group_sprite.add(player)
 def update_game():
     global delta_time
     global state
+    global number_control_wave
 
     #wave config
     player.update_game(screen, wave_config.nearest_enemy(player), wave_config.there_enemy(), delta_time)
@@ -121,9 +128,12 @@ def update_game():
         #a proxima wave soh começa se escolher um poder
         #e soh pode ter um poder se nao houver inimigos tmb neh
         for cards in list_cards_to_use:
-            if cards.touched_power(event,not wave_config.there_enemy()) and not wave_config.there_enemy():
+            if cards.touched_power(event,not wave_config.there_enemy()) and not wave_config.there_enemy(): 
                 wave_config.set_can_spawn()
-                choices_cards()
+
+                if wave_config.number_wave != number_control_wave: 
+                    choices_cards()
+                    number_control_wave += 1
    
     delta_time = clock_obj.tick(60) / 1000
     #print(delta_time)
@@ -155,12 +165,14 @@ def actualize_groups_sprites():
 #ur dur tenho q evocar uma palavra reservada numa funcao PRA MUDAR UMA VARIAVEL GLOBAL
 def update_general():
     global state
+    global number_control_wave
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
         if menu.play(event):
             state = 'game'
         if lose.reset_touched(event):
+            number_control_wave = 0
             print('reset')
             player.reset()
             wave_config.reset()
