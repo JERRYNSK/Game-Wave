@@ -9,7 +9,7 @@ class Power(pygame.sprite.Sprite):
     def __init__(self, path_img, type_power, position, player, scale):#position vai ser uma tupla fds
         pygame.sprite.Sprite.__init__(self)
         pygame.font.init()
-        self.font = pygame.font.SysFont('assets/font/Minecraft.ttf', 50)
+        self.font = pygame.font.SysFont('../assets/font/Minecraft.ttf', 50)
         self.my_type = type_power
         image = pygame.image.load(path_img)
         self.image = pygame.transform.scale(image, (scale, scale))
@@ -56,22 +56,22 @@ class Power(pygame.sprite.Sprite):
         match type_power:
             case 'range': 
                 self.player.range_fire += 50
-                print('range')
+                print('#distancia')
             case 'max_life': 
                 self.player.max_life += random.choice((50,100))
-                print('max vida')
+                print('#max vida')
             case 'cure': 
                 self.player.cure(50)
-                print('cura')
+                print('#cura')
             case 'damage': 
                 self.player.damage_fire += 50
-                print('dano')
+                print('#dano')
             case 'velocity_move': 
                 self.player.speed += 50
-                print('movimento rapido')
+                print('#movimento rapido')
             case 'velocity_attack': 
                 self.player.set_fire_rate()
-                print('ataque rapido')
+                print('#ataque rapido')
             
 
 
