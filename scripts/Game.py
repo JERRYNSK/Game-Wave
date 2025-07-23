@@ -116,7 +116,7 @@ def update_game():
 
 
     #cartas
-    for cards in cards_lists:
+    for cards in cards_list:
         cards.update(screen, not wave_config.there_enemy())
     
 
