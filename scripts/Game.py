@@ -134,6 +134,7 @@ def update_game():
                 if wave_config.number_wave != number_control_wave: 
                     choices_cards()
                     number_control_wave += 1
+                    break
    
     delta_time = clock_obj.tick(60) / 1000
     #print(delta_time)
