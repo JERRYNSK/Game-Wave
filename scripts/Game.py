@@ -208,7 +208,7 @@ while(True):
     
     pygame.display.update()
     
-#obg, prof Renata
+
 #nah, odeio paiagame
 #mdssssss to despendendo    tempo dms aq, tenho q estudar cálculo e geometria analiticaaaaaaaaaaaaaaaaaaaaaa
 #love 2d é bem melhor, tipo x tendendo a 0 numa fração lá
